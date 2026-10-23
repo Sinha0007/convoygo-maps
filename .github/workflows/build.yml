@@ -1,0 +1,77 @@
+name: Build maps
+
+on:
+  workflow_dispatch:
+    inputs:
+      regions:
+        description: Comma-separated region ids from regions.json (empty = all)
+        type: string
+        default: in-manali-demo
+      release:
+        description: Publish a release with manifest.json (regions not built are copied from the previous release)
+        type: boolean
+        default: false
+  push:
+    paths: ['scripts/**', '.github/workflows/build.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-maps
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test "scripts/**/*.test.mjs"
+
+  build:
+    if: github.event_name == 'workflow_dispatch'
+    needs: test
+    runs-on: ubuntu-24.04
+    # The Actions limit is 6 hours; a full Himachal build must finish well inside it.
+    timeout-minutes: 350
+    env:
+      REGIONS: ${{ inputs.regions }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+
+      - name: Install pmtiles, GDAL, tippecanoe
+        run: bash scripts/install-tools.sh
+
+      - name: Build
+        run: bash scripts/build.sh "$REGIONS"
+
+      - name: Summary
+        if: always()
+        run: |
+          [ -f dist/timings.tsv ] && node scripts/summary.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+          df -h /
+
+      - name: Release
+        if: inputs.release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/release.mjs
+
+      - name: Keep the files of a test build for 3 days
+        if: ${{ !inputs.release }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: maps-${{ github.run_id }}
+          path: dist/
+          retention-days: 3

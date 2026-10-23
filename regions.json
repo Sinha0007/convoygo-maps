@@ -1,0 +1,25 @@
+{
+  "regions": [
+    {
+      "id": "in-manali-demo",
+      "name": "Manali (demo)",
+      "bbox": [77.08, 32.15, 77.30, 32.34],
+      "contours": true,
+      "note": "About 20 x 20 km around Manali, for quick tests and the app's mock server. Keep it under 25 MB."
+    },
+    {
+      "id": "in-himachal",
+      "name": "Himachal Pradesh",
+      "bbox": [75.5, 30.3, 79.05, 33.3],
+      "contours": true,
+      "note": "OSM boundary bbox is 75.594,30.377,79.012,33.256; east edge widened to 79.05 to keep all of Kinnaur."
+    },
+    {
+      "id": "in-ladakh",
+      "name": "Ladakh",
+      "bbox": [75.3, 32.3, 79.5, 35.7],
+      "contours": true,
+      "note": "OSM boundary bbox (relation 5515045) is 75.327,32.336,79.461,35.673, rounded outwards."
+    }
+  ]
+}

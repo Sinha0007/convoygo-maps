@@ -1,0 +1,4 @@
+dist/
+carry/
+node_modules/
+*.mbtiles
