@@ -23,4 +23,4 @@ echo "Base map from ${build}"
 echo "$build" > "${out}.source"
 
 pmtiles extract "$build" "$out" --bbox="$bbox" --download-threads=8 --quiet
-pmtiles show "$out" | head -20
+pmtiles show "$out" > "$out.info" && sed -n 1,20p "$out.info" && rm -f "$out.info"

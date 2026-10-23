@@ -53,4 +53,4 @@ tippecanoe -q -P -f -o "$work/contours.mbtiles" -l contours -Z11 -z14 \
   --attribution='<a href="https://dataspace.copernicus.eu">Copernicus DEM GLO-30</a>' \
   "$work/contours.geojsons"
 pmtiles convert "$work/contours.mbtiles" "$out"
-pmtiles show "$out" | head -20
+pmtiles show "$out" > "$out.info" && sed -n 1,20p "$out.info" && rm -f "$out.info"

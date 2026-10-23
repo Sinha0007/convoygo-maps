@@ -26,5 +26,5 @@ if ! sudo apt-get install -y -qq tippecanoe > /dev/null 2>&1; then
   make -C "$tmp/tippecanoe" -j"$(nproc)" > /dev/null
   sudo make -C "$tmp/tippecanoe" install > /dev/null
 fi
-tippecanoe --version 2>&1 | head -1
+tippecanoe --version || true
 rm -rf "$tmp"
