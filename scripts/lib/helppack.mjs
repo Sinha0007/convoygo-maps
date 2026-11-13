@@ -1,6 +1,7 @@
 // OpenStreetMap (Overpass) elements → Help Pack GeoJSON, exactly the contract's HelpPackProperties:
 //   { kind, name?, phone?, ele?, osmId }   kind: hospital | clinic | police | fuel | water |
-//                                                mechanic | shelter | peak | viewpoint
+//                                                mechanic | shelter | peak | viewpoint |
+//                                                place (towns, villages; for offline search) | pass
 
 /** OSM tag → Help Pack kind. The first matching rule wins. */
 const RULES = [
@@ -16,10 +17,15 @@ const RULES = [
   ['tourism', 'wilderness_hut', 'shelter'],
   ['tourism', 'viewpoint', 'viewpoint'],
   ['natural', 'peak', 'peak'],
+  ['mountain_pass', 'yes', 'pass'],
+  ['place', 'city', 'place'],
+  ['place', 'town', 'place'],
+  ['place', 'village', 'place'],
+  ['place', 'hamlet', 'place'],
 ];
 
 /** Kinds that carry an elevation (contract: "for peaks and shelters"). */
-const WITH_ELE = new Set(['peak', 'shelter']);
+const WITH_ELE = new Set(['peak', 'shelter', 'pass']);
 
 /** Overpass QL for every Help Pack kind in a bbox [w, s, e, n]. Ways come with geometry for a true centroid. */
 export function overpassQuery([w, s, e, n], timeoutS = 600) {
@@ -29,6 +35,8 @@ export function overpassQuery([w, s, e, n], timeoutS = 600) {
     `["shop"~"^(car_repair|motorcycle_repair)$"]`,
     `["tourism"~"^(alpine_hut|wilderness_hut|viewpoint)$"]`,
     `["natural"="peak"]`,
+    `["mountain_pass"="yes"]`,
+    `["place"~"^(city|town|village|hamlet)$"]`,
   ];
   const nw = filters.flatMap((f) => [`node${f}${b};`, `way${f}${b};`]).join('\n  ');
   const rel = filters.map((f) => `relation${f}${b};`).join('\n  ');

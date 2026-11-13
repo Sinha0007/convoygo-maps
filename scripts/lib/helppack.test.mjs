@@ -16,6 +16,10 @@ test('maps every OSM tag to its Help Pack kind', () => {
   assert.equal(kindOf({ tourism: 'wilderness_hut' }), 'shelter');
   assert.equal(kindOf({ tourism: 'viewpoint' }), 'viewpoint');
   assert.equal(kindOf({ natural: 'peak' }), 'peak');
+  assert.equal(kindOf({ mountain_pass: 'yes', natural: 'saddle' }), 'pass');
+  assert.equal(kindOf({ place: 'town' }), 'place');
+  assert.equal(kindOf({ place: 'hamlet' }), 'place');
+  assert.equal(kindOf({ place: 'locality' }), undefined);
   assert.equal(kindOf({ amenity: 'restaurant' }), undefined);
 });
 
@@ -81,9 +85,16 @@ test('prefers name:en, drops junk phones and unknown kinds, de-duplicates', () =
 test('the query asks for every kind inside the bbox (south, west, north, east)', () => {
   const q = overpassQuery([75.5, 30.3, 79.05, 33.3]);
   assert.match(q, /\(30\.3,75\.5,33\.3,79\.05\)/);
-  for (const v of ['hospital', 'clinic', 'police', 'fuel', 'drinking_water', 'shelter', 'car_repair', 'motorcycle_repair', 'alpine_hut', 'wilderness_hut', 'viewpoint', '"natural"="peak"']) {
+  for (const v of ['hospital', 'clinic', 'police', 'fuel', 'drinking_water', 'shelter', 'car_repair', 'motorcycle_repair', 'alpine_hut', 'wilderness_hut', 'viewpoint', '"natural"="peak"', '"mountain_pass"="yes"', 'city|town|village|hamlet']) {
     assert.ok(q.includes(v), v);
   }
   assert.match(q, /out tags geom/);
   assert.match(q, /out tags center/);
+});
+
+test('passes keep their elevation; places are searchable names', () => {
+  const pass = toFeature({ type: 'node', id: 7, lat: 32.3712, lon: 77.2479, tags: { mountain_pass: 'yes', name: 'Rohtang Pass', ele: '3978' } });
+  assert.deepEqual(pass.properties, { kind: 'pass', name: 'Rohtang Pass', ele: 3978, osmId: 'node/7' });
+  const town = toFeature({ type: 'node', id: 8, lat: 32.2432, lon: 77.1892, tags: { place: 'town', name: 'Manali', ele: '2050' } });
+  assert.deepEqual(town.properties, { kind: 'place', name: 'Manali', osmId: 'node/8' });
 });
