@@ -17,7 +17,7 @@ Any map that shows these files must display "© OpenStreetMap contributors".
 | Asset | What |
 | --- | --- |
 | `<id>-base.pmtiles` | OpenStreetMap vector tiles (Protomaps basemap schema) |
-| `<id>-contours.pmtiles` | 20 m contour lines, layer `contours`, attributes `ele` (m) and `idx` (1 on 100 m index lines). Zoom 11–12 holds only the index lines; zoom 13–14 holds all of them. |
+| `<id>-contours.pmtiles` | 20 m contour lines, layer `contours`, attributes `ele` (m) and `idx` (1 on 100 m index lines). Zoom 11–12 holds only the index lines; zoom 13–14 holds all of them. Only for regions with `"contours": true` (trek regions, not cities). |
 | `<id>-helppack.geojson` | Points: hospital, clinic, police, fuel, water, mechanic, shelter, peak, viewpoint |
 | `assets.zip` | Fonts and sprites for the map style; one file shared by every region |
 | `manifest.json` | Every region with id, name, bbox, version and files (asset, kind, sizeBytes, md5) |

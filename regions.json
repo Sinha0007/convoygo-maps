@@ -20,6 +20,13 @@
       "bbox": [75.3, 32.3, 79.5, 35.7],
       "contours": true,
       "note": "OSM boundary bbox (relation 5515045) is 75.327,32.336,79.461,35.673, rounded outwards."
+    },
+    {
+      "id": "in-bengaluru",
+      "name": "Bengaluru",
+      "bbox": [77.3, 12.7, 77.9, 13.3],
+      "contours": false,
+      "note": "City plus outskirts: the BBMP area (about 77.46-77.78, 12.83-13.14) widened to whole tenths so it takes in the airport, Nelamangala, Hoskote, Electronic City and Anekal. No contours: a city does not need them, and it keeps the download small."
     }
   ]
 }
