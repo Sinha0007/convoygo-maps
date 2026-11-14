@@ -1,0 +1,24 @@
+ConvoyGo — Proprietary Software Licence
+
+Copyright (c) 2026 Pranab Sinha. All rights reserved.
+
+This software, including its source code, designs, documentation, data formats,
+API contract and related materials (the "Software"), is the proprietary and
+confidential property of Pranab Sinha.
+
+No permission is granted to any person to use, copy, modify, merge, publish,
+distribute, sublicense, sell, reverse-engineer or create derivative works of the
+Software, in whole or in part, without the prior written permission of the
+copyright holder.
+
+Access to this repository does not grant any licence. Any unauthorised use is
+prohibited and may result in civil and criminal liability.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+Contact: Pranab Sinha (GitHub: Sinha0007)
+
+Map data: the map files published in this repository's releases are derived from
+OpenStreetMap data, (c) OpenStreetMap contributors, available under the Open
+Database License (ODbL) 1.0. This licence covers the code, scripts and region
+definitions in this repository, not the OpenStreetMap data.
